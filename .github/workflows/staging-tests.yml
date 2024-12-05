@@ -17,6 +17,7 @@ on:
           - '-- --project=chromium'
           - '-- --project=firefox'
           - '-- --project=webkit' #safari
+        default: - '-- --project=chromium'
       workers:
         type: string
         description: number of parallel workers

@@ -16,11 +16,6 @@ on:
         type: choice
         description: Type of browser to run the tests on. The first value will be the default
         required: true
-        # options:
-        #   - '' #this will execute on all browsers
-        #   - '-- --project=chromium'
-        #   - '-- --project=firefox'
-        #   - '-- --project=webkit' #safari
       workers:
         type: string
         description: number of parallel workers
@@ -74,7 +69,6 @@ jobs:
       - name: Upload Playwright Test Results
         if: always() # Run this step even if tests fail
         uses: actions/upload-artifact@v3
-        if: always()
         with:
           name: playwright-reports
           path: ${{ github.workspace }}/**/playwright-reports/html/
