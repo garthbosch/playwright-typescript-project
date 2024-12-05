@@ -1,0 +1,25 @@
+name: Staging-Regression-Playwright-Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      grep:
+        type: string
+        description: Filter test by grep E.g. - @end2endtest or @smoketest or @nightly or @regressiontest
+        default: '@regression'
+        required: true
+      workers:
+        type: string
+        description: number of parallel workers
+        default: '1'
+        required: false
+
+# Run tests
+jobs:
+  call-workflow-passing-data:
+    uses: ./.github/workflows/test-runner.yml
+    secrets: inherit
+    with:
+      environment: 'staging'
+      grep: ${{ inputs.grep }}
+      workers: ${{ inputs.workers }}

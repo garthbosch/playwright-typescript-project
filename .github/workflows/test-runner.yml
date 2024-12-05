@@ -1,0 +1,101 @@
+name: Playwright-Tests-Runner
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        description: Test environment
+        default: integration
+        required: true
+      grep:
+        type: string
+        description: Filter test by grep E.g. - @end2endtest or @smoketest or @nightlytest or @regressiontest
+        default: '@regression'
+        required: false
+      browsers:
+        type: choice
+        description: Type of browser to run the tests on. The first value will be the default
+        required: true
+        options:
+        - '-- --project=chromium'
+        - '-- --project=firefox'
+        - '-- --project=webkit' #safari
+        - '' #this will execute on all browsers
+      workers:
+        type: string
+        description: number of parallel workers
+        default: '1'
+        required: false
+        
+jobs:
+  test:
+    name: Run Tests and Publish Allure Reports
+    permissions:
+      id-token: write
+      contents: read # This is required for actions/checkout
+    timeout-minutes: 360
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.6.0'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install 
+      
+      # Step 4: Install Playwright Browsers
+      - name: Install Playwright Browsers
+        run: npx playwright install
+
+    # Step 5: Run tests
+      - name: Run Playwright Tests
+        run: npm run test -- --grep ${{ inputs.grep }} ${{ inputs.browsers }} -- --workers=${{ inputs.workers }}
+        env:
+          GREP: ${{ inputs.grep }}
+          retry_test: "true"
+          workers: ${{ inputs.workers }}
+
+    # Step 6: Upload Junit Artifacts (optional)
+      - name: Upload Junit Test Results
+        if: always() # Run this step even if tests fail
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: test-results/
+
+    # Step 7: Upload Playwright Artifacts (optional)
+      - name: Upload Playwright Test Results
+        if: always() # Run this step even if tests fail
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-reports
+          path: ${{ github.workspace }}/**/playwright-reports/html/
+          retention-days: 10
+
+    # Step 8: Upload Allure Artifacts (optional)
+      - name: Upload Allure Reports
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        id: allure-report
+        with:
+          allure_results: allure-results
+          gh_pages: gh-pages
+          allure_report: allure-report
+          allure_history: allure-history
+          subfolder: ${{ github.workflow }}
+          keep_reports: 10
+
+    # Step 9: Publish Junit Artifacts (optional)
+      - name: Publish Junit Report
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          report_paths: 'test-results/junit/junit-result.xml'   
