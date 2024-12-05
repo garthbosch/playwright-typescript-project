@@ -95,7 +95,7 @@ jobs:
           retention-days: 10
 
     # Step 10: Upload Allure Results Artifacts
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: allure-results
