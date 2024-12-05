@@ -95,7 +95,7 @@ jobs:
           retention-days: 10
 
     # Step 10: Upload Allure Results Artifacts
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4  
         if: always()
         with:
           name: allure-results
@@ -133,7 +133,7 @@ jobs:
           allure_report: allure-report
           allure_history: allure-history
           subfolder: ${{ github.workflow }}
-          report_url: https://github.com/garthbosch/playwright-typescript-project/${{ github.workflow }}
+          report_url: https://garthbosch.github.io/playwright-typescript-project/${{ github.workflow }}
           keep_reports: 10
 
     # Step 14: Deploy report to Github Pages      
@@ -153,4 +153,4 @@ jobs:
     needs: test
     steps:
       - name: Create Allure Reports Link
-        run: echo 'https://github.com/garthbosch/playwright-typescript-project/${{ github.workflow }}/${{ github.run_number }}' >> $GITHUB_STEP_SUMMARY
+        run: echo 'https://garthbosch.github.io/playwright-typescript-project/${{ github.workflow }}/${{ github.run_number }}' >> $GITHUB_STEP_SUMMARY
