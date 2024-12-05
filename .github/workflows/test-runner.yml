@@ -16,11 +16,11 @@ on:
         type: choice
         description: Type of browser to run the tests on. The first value will be the default
         required: true
-        options:
-          - '' #this will execute on all browsers
-          - '-- --project=chromium'
-          - '-- --project=firefox'
-          - '-- --project=webkit' #safari
+        # options:
+        #   - '' #this will execute on all browsers
+        #   - '-- --project=chromium'
+        #   - '-- --project=firefox'
+        #   - '-- --project=webkit' #safari
       workers:
         type: string
         description: number of parallel workers
