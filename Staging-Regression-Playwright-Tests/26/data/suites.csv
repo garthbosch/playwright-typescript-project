@@ -1,0 +1,2 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","1585","should navigate to the home page and check for keywords @end2endtest @regressiontest @nightlytest @smoketest","chromium","Thu Dec 05 22:13:58 GMT 2024","passed","Thu Dec 05 22:14:00 GMT 2024","Sinov8 Page Test","navigateHome.spec.ts","",""
