@@ -133,7 +133,7 @@ jobs:
           allure_report: allure-report
           allure_history: allure-history
           subfolder: ${{ github.workflow }}
-          report_url: https://garthbosch.github.io/playwright-typescript-project/${{ github.workflow }}/allure-reports
+          report_url: https://garthbosch.github.io/playwright-typescript-project/${{ github.workflow }}
           keep_reports: 10
 
     # Step 14: Deploy Allure Report to Github Pages      
@@ -146,16 +146,6 @@ jobs:
           publish_dir: allure-history
           force_orphan: true 
 
-    # Step 15: Deploy Playwright report to Github Pages      
-      - name: Deploy Playwright report to Github Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          personal_token: ${{ secrets.GEE_SECRETS }}
-          publish_branch: gh-pages
-          publish_dir: playwright-reports
-          force_orphan: true
-
   publishAllureLink:
     if: ${{ (failure() || success()) }}
     name: Adding Link to Allure Report
@@ -163,6 +153,5 @@ jobs:
     needs: test
     steps:
       - name: Create Allure Reports Link
-        run: echo 'https://garthbosch.github.io/playwright-typescript-project/${{ github.workflow }}/allure-reports/${{ github.run_number }}' >> $GITHUB_STEP_SUMMARY
-      - name: Create Playwright Reports Link
-        run: echo 'https://garthbosch.github.io/playwright-typescript-project/${{ github.workflow }}/playwright-reports/html' >> $GITHUB_STEP_SUMMARY
+        run: echo 'https://garthbosch.github.io/playwright-typescript-project/${{ github.workflow }}/${{ github.run_number }}' >> $GITHUB_STEP_SUMMARY
+      
