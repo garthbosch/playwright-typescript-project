@@ -13,7 +13,6 @@ on:
         default: '@regression'
         required: false
       browsers:
-        type: choice
         description: Type of browser to run the tests on. The first value will be the default
       workers:
         type: string
