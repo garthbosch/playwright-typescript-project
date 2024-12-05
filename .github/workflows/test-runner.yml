@@ -86,7 +86,7 @@ jobs:
         if: always()
         continue-on-error: true
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GEE_SECRETS }}
           path: gh-pages
           ref: gh-pages
 
@@ -109,7 +109,7 @@ jobs:
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
-          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          personal_token: ${{ secrets.GEE_SECRETS }}
           publish_branch: gh-pages
           publish_dir: allure-history
           force_orphan: true 
