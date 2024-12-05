@@ -5,9 +5,18 @@ on:
     inputs:
       grep:
         type: string
-        description: Filter test by grep E.g. - @end2endtest or @smoketest or @nightly or @regressiontest
+        description: Filter test by grep E.g. - @end2endtest or @smoketest or @nightlytest or @regressiontest
         default: '@regression'
         required: true
+      browsers:
+        type: choice
+        description: Type of browser to run the tests on. The first value will be the default
+        required: true
+        options:
+        - '-- --project=chromium'
+        - '-- --project=firefox'
+        - '-- --project=webkit' #safari
+        - '' #this will execute on all browsers
       workers:
         type: string
         description: number of parallel workers
@@ -22,4 +31,5 @@ jobs:
     with:
       environment: 'staging'
       grep: ${{ inputs.grep }}
+      browsers: ${{ inputs.browsers }}
       workers: ${{ inputs.workers }}
