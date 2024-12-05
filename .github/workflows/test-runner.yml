@@ -39,16 +39,37 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '22.6.0'
+          cache: 'npm' # Automatically caches `~/.npm` for dependencies
 
-      # Step 3: Install dependencies
+      # Step 3: Cache node_modules
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: node-modules-cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules-
+      
+      # Step 4: Install dependencies
       - name: Install dependencies
         run: npm install 
       
-      # Step 4: Install Playwright Browsers
+      # Step 5: Cache Playwright browsers
+      - name: Cache Playwright browsers
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+      
+    # Step 6: Install Playwright Browsers
       - name: Install Playwright Browsers
         run: npx playwright install
 
-    # Step 5: Run tests
+    # Step 7: Run tests
       - name: Run Playwright Tests
         run: npm run test -- --grep ${{ inputs.grep }} ${{ inputs.browsers }} --workers=${{ inputs.workers }}
         env:
@@ -56,7 +77,7 @@ jobs:
           retry_test: "true"
           workers: ${{ inputs.workers }}
 
-    # Step 6: Upload Junit Artifacts (optional)
+    # Step 8: Upload Junit Artifacts (optional)
       - name: Upload Junit Test Results
         if: always() # Run this step even if tests fail
         uses: actions/upload-artifact@v4
@@ -64,7 +85,7 @@ jobs:
           name: test-results
           path: test-results/
 
-    # Step 7: Upload Playwright Artifacts (optional)
+    # Step 9: Upload Playwright Artifacts (optional)
       - name: Upload Playwright Test Results
         if: always() # Run this step even if tests fail
         uses: actions/upload-artifact@v4
@@ -73,7 +94,7 @@ jobs:
           path: ${{ github.workspace }}/**/playwright-reports/html/
           retention-days: 10
 
-    # Step 8: Upload Allure Results Artifacts
+    # Step 10: Upload Allure Results Artifacts
       - uses: actions/upload-artifact@v3
         if: always()
         with:
@@ -84,14 +105,14 @@ jobs:
             !${{ github.workspace }}/**/allure-results/**/*.ZIP
           retention-days: 10
 
-    # Step 9: Publish Junit Artifacts (optional)
+    # Step 11: Publish Junit Artifacts (optional)
       - name: Publish Junit Report
         uses: mikepenz/action-junit-report@v3
         if: always()
         with:
           report_paths: 'test-results/junit/junit-result.xml'  
 
-    # Step 10: Get Allure History
+    # Step 12: Get Allure History
       - name: Get Allure history
         uses: actions/checkout@v3
         if: always()
@@ -101,7 +122,7 @@ jobs:
           path: gh-pages
           ref: gh-pages
 
-    # Step 11: Upload Allure Reports
+    # Step 13: Upload Allure Reports
       - name: Upload Allure Reports
         uses: simple-elf/allure-report-action@master
         if: always()
@@ -115,7 +136,7 @@ jobs:
           report_url: https://github.com/garthbosch/playwright-typescript-project/${{ github.workflow }}
           keep_reports: 10
 
-    # Step 12: Deploy report to Github Pages      
+    # Step 14: Deploy report to Github Pages      
       - name: Deploy report to Github Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3
