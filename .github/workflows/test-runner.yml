@@ -136,8 +136,8 @@ jobs:
           report_url: https://garthbosch.github.io/playwright-typescript-project/${{ github.workflow }}
           keep_reports: 10
 
-    # Step 14: Deploy report to Github Pages      
-      - name: Deploy report to Github Pages
+    # Step 14: Deploy Allure Report to Github Pages      
+      - name: Deploy Allure Report to Github Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -145,6 +145,16 @@ jobs:
           publish_branch: gh-pages
           publish_dir: allure-history
           force_orphan: true 
+
+    # Step 15: Deploy Playwright report to Github Pages      
+      - name: Deploy Playwright report to Github Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GEE_SECRETS }}
+          publish_branch: gh-pages
+          publish_dir: playwright-reports
+          force_orphan: true
 
   publishAllureLink:
     if: ${{ (failure() || success()) }}
