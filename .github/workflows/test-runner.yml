@@ -50,7 +50,7 @@ jobs:
 
     # Step 5: Run tests
       - name: Run Playwright Tests
-        run: npm run test --grep ${{ inputs.grep }} ${{ inputs.browsers }} --workers=${{ inputs.workers }}
+        run: npm run test -- --grep ${{ inputs.grep }} ${{ inputs.browsers }} --workers=${{ inputs.workers }}
         env:
           GREP: ${{ inputs.grep }}
           retry_test: "true"
