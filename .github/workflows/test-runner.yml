@@ -73,14 +73,25 @@ jobs:
           path: ${{ github.workspace }}/**/playwright-reports/html/
           retention-days: 10
 
-    # Step 8: Publish Junit Artifacts (optional)
+    # Step 8: Upload Allure Results Artifacts
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: allure-results
+          path: |
+            ${{ github.workspace }}/**/allure-results
+            !${{ github.workspace }}/**/allure-results/**/*.png
+            !${{ github.workspace }}/**/allure-results/**/*.ZIP
+          retention-days: 10
+
+    # Step 9: Publish Junit Artifacts (optional)
       - name: Publish Junit Report
         uses: mikepenz/action-junit-report@v3
         if: always()
         with:
           report_paths: 'test-results/junit/junit-result.xml'  
 
-    # Step 9: Get Allure History
+    # Step 10: Get Allure History
       - name: Get Allure history
         uses: actions/checkout@v3
         if: always()
@@ -90,7 +101,7 @@ jobs:
           path: gh-pages
           ref: gh-pages
 
-    # Step 10: Upload Allure Reports
+    # Step 11: Upload Allure Reports
       - name: Upload Allure Reports
         uses: simple-elf/allure-report-action@master
         if: always()
@@ -104,7 +115,7 @@ jobs:
           report_url: https://github.com/garthbosch/playwright-typescript-project/${{ github.workflow }}
           keep_reports: 10
 
-    # Step 11: Deploy report to Github Pages      
+    # Step 12: Deploy report to Github Pages      
       - name: Deploy report to Github Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3
