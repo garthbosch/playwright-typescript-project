@@ -16,6 +16,7 @@ on:
         type: choice
         description: Type of browser to run the tests on. The first value will be the default
         required: true
+        default: '-- --project=chromium'
       workers:
         type: string
         description: number of parallel workers
