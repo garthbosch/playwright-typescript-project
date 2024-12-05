@@ -1,0 +1,30 @@
+{
+  "name": "playwright-typescript-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test -c playwright.config.ts",
+    "test:headed": "npx playwright test -c playwright.config.ts --headed --project='chromium'",
+    "test:playwright-report": "npx playwright test -c playwright.config.ts --project='chromium' && npx playwright show-report playwright-reports/html",
+    "test:allure-report": "npx playwright test -c playwright.config.ts --project='chromium' && allure generate allure-results --clean -o allure-report",
+    "test:debug": "npx playwright test -c playwright.config.ts --project='chromium' --debug"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.10.1",
+    "allure-playwright": "^3.0.6",
+    "playwright": "^1.49.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "lint-staged": {
+    "**/*.{ts,json}": [
+      "npx prettier --write",
+      "npx eslint --fix"
+    ]
+  }
+}
