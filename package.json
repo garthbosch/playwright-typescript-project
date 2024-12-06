@@ -5,6 +5,7 @@
   "scripts": {
     "test": "npx playwright test -c playwright.config.ts",
     "test:headed": "npx playwright test -c playwright.config.ts --headed --project='chromium'",
+    "test:headed-all-browsers": "npx playwright test -c playwright.config.ts --headed",
     "test:playwright-report": "npx playwright test -c playwright.config.ts --project='chromium' && npx playwright show-report playwright-reports/html",
     "test:allure-report": "npx playwright test -c playwright.config.ts --project='chromium' && allure generate allure-results --clean -o allure-report",
     "test:debug": "npx playwright test -c playwright.config.ts --project='chromium' --debug"
