@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "garthbosch",
+        "projectKey": "garthbosch_gee"
+    }
+}

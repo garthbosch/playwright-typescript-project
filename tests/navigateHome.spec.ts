@@ -17,9 +17,6 @@ test.describe('Sinov8 Page Test', () => {
     }
 
     await page.getByRole('link', { name: 'Software Solutions' }).click();
-    const page1Promise = page.waitForEvent('popup');
-    await page.getByRole('link', { name: 'Go to our dedicated product' }).click();
-    const page1 = await page1Promise;
-    await page1.getByText('The only end-to-end solution').click();
+    await expect(page.getByRole('heading', { name: 'Rental Asset Management' })).toBeVisible();
   });
 });
